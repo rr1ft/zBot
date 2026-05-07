@@ -53,3 +53,7 @@ Source/Geode/pkg/uber-apk-signer.jar
 
 # geode files
 *.geode
+
+# build files
+/.build-vs2022
+/.cmake
