@@ -57,4 +57,5 @@ Source/Geode/pkg/uber-apk-signer.jar
 # build files
 /build-vs2022
 /cmake
-/reference
+/references
+src/autobot-debug/*.log
