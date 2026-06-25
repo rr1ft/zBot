@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   build:
@@ -12,29 +12,43 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - name: Windows
-          os: windows-latest
-          
-        - name: MacOS
-          os: macos-latest
+          - name: Windows
+            os: windows-latest
+
+          - name: MacOS
+            os: macos-latest
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.ZBOT_GITHUB_PAT }}
-          submodules: 'recursive'
+          submodules: recursive
 
-      - name: Build the mod
+      - name: Build Mod
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
-          cli: "latest"
-          sdk: "nightly"
-      
+          cli: latest
+          sdk: nightly
+
   package:
+    name: Package Builds
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Combine Builds
+        id: build
+        uses: geode-sdk/build-geode-mod/combine@main
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build Output
+          path: ${{ steps.build.outputs.build-output }}  package:
     name: Package builds
     runs-on: ubuntu-latest
     needs: ['build']
