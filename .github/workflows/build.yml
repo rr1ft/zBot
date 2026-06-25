@@ -39,21 +39,6 @@ jobs:
   package:
     name: Package Builds
     runs-on: ubuntu-latest
-    needs:
-      - build
-
-    steps:
-      - name: Combine Builds
-        id: build
-        uses: geode-sdk/build-geode-mod/combine@main
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build Output
-          path: ${{ steps.build.outputs.build-output }}  package:
-    name: Package Builds
-    runs-on: ubuntu-latest
     needs: build
 
     steps:
@@ -66,15 +51,3 @@ jobs:
         with:
           name: Build Output
           path: ${{ steps.build.outputs['build-output'] }}
-    name: Package builds
-    runs-on: ubuntu-latest
-    needs: ['build']
-
-    steps:
-      - uses: geode-sdk/build-geode-mod/combine@main
-        id: build
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build Output
-          path: ${{ steps.build.outputs.build-output }}
